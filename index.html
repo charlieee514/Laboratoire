@@ -1,102 +1,170 @@
 <!doctype html>
 <html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <title>TP Jeu vidéo</title>
-    </head>
-    <body>
-        <h1>Jeu Video de l'année 2024</h1>
-        <section>
-            <h2>Catégorie de Jeu</h2>
-            <ul>
-                <li><a href="?categorie=1">Action</a></li>
-                <li><a href="?categorie=2">Aventure</a></li>
-                <li><a href="?categorie=3">Csasse-Tête</a></li>
-                <li><a href="?categorie=4">Course</a></li>
-                <li><a href="?categorie=5">FPS</a></li>
-                <li><a href="?categorie=6">Horreur</a></li>
-                <li><a href="?categorie=7">RPG</a></li>
-                <li><a href="?categorie=8">Sports</a></li>
-                <li><a href="?categorie=9">Survie</a></li>
-                <li><a href="?categorie=10">Zombie</a></li>
-            </ul>
-        </section>
 
-        <h2>Liste de jeux</h2>
+<head>
+    <meta charset="utf-8">
+    <title>TP Jeu vidéo</title>
+    <link rel="stylesheet" href="./styles/normalize.css">
+    <link rel="stylesheet" href="./styles/styleJeu.css">
+</head>
 
-        <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <img src="images/gta6.png" alt="Gta6">
-                        <h3>Grand Theft Auto VI</h3>
-                        <img src="images/playstation.png" alt="Playstation">
-                        <img src="images/xbox.png" alt="xbox">
-                    </td>
-                    <td>
-                        <img src="images/spiderman.png" alt="Spider-Man">
-                        <h3>Marvel's Spider-Man 2</h3>
-                        <img src="images/playstation.png" alt="Playstation">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/readyornot.png" alt="ReadyorNot">
-                        <h3>Ready or Not</h3>
-                        <img src="images/windows.png" alt="Windows">
-                    </td>
-                    <td>
-                        <img src="images/invincible.png" alt="TheInvincible">
-                        <h3>The Invincible</h3>
-                        <img src="images/windows.png" alt="Windows">
-                        <img src="images/playstation.png" alt="Playstation">
-                        <img src="images/xbox.png" alt="Xbox">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/hotwheels.png" alt="HotWheels">
-                        <h3>Hot Wheels</h3>
-                        <img src="images/windows.png" alt="Windows">
-                    </td>
-                    <td>
-                        <img src="images/lethalcompany.png" alt="LethalCompany">
-                        <h3>Lethal Company</h3>
-                        <img src="images/windows.png" alt="Windows">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/wolfamongus.png" alt="TheWolfAmongUs">
-                        <h3>The Wolf Among Us</h3>
-                        <img src="images/windows.png" alt="Windows">
-                        <img src="images/playstation.png" alt="Playstation">
-                        <img src="images/xbox.png" alt="Xbox">
-                    </td>
-                    <td>
-                        <img src="images/thedaybefore.png" alt="TheDaysBefore">
-                        <h3>The Days Before</h3>
-                        <img src="images/windows.png" alt="Windows">
-                        <img src="images/playstation.png" alt="Playstation">
-                        <img src="images/xbox.png" alt="Xbox">
-                    </td>
-                    
-                </tr>
-                <tr>
-                    <td>
-                        <img src="images/mw2.png" alt="MW2">
-                        <h3>Call of Duty: Modern Warfare II</h3>
-                        <img src="images/windows.png" alt="Windows">
-                        <img src="images/playstation.png" alt="Playstation">
-                        <img src="images/xbox.png" alt="Xbox">
-                    </td>
-                    <td>
-                        <img src="images/endlessdungeon.png" alt="EndlessDungeon">
-                        <h3>Endless Dungeon</h3>
-                        <img src="images/windows.png" alt="Windows">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
+<body class="base">
+    <div class="blockHaut">
+        <h1 class="titres">Jeu Video 2024</h1>
+    </div>
+    <div class="grid">
+        <nav class="menu categorie">
+            <h2 class="titres">Catégorie de Jeu</h2>
+
+            <li><img src="./images/categories/action.png" alt="Catégorie action"> <a href="?categorie=1">Action</a></li>
+            <li><img src="./images/categories/aventure.png" alt="Catégorie aventure"> <a href="?categorie=2">Aventure</a></li>
+            <li><img src="./images/categories/cassetete.png" alt="Catégorie cassetete"> <a href="?categorie=3">Casse-Tête</a></li>
+            <li><img src="./images/categories/course.png" alt="Catégorie course"> <a href="?categorie=4">Course</a></li>
+            <li><img src="./images/categories/fps.png" alt="Catégorie fps"> <a href="?categorie=5">FPS</a></li>
+            <li><img src="./images/categories/horror.png" alt="Catégorie horreur"> <a href="?categorie=6">Horreur</a></li>
+            <li><img src="./images/categories/rpg.png" alt="Catégorie rpg"> <a href="?categorie=7">RPG</a></li>
+            <li><img src="./images/categories/sports.png" alt="Catégorie sports"> <a href="?categorie=8">Sports</a></li>
+            <li><img src="./images/categories/survie.png" alt="Catégorie survie"> <a href="?categorie=9">Survie</a></li>
+            <li><img src="./images/categories/zombie.png" alt="Catégorie zombie"> <a href="?categorie=10">Zombie</a></li>
+        </nav>
+
+        <div class="liste">
+
+            <input type="text" name="chercheJeu" id="chercheJeu" placeholder="Recherche"> 
+
+            <select name="listeCategorie" id="listeCategorie">
+                <option value=action>Action</option>
+                <option value=aventure>Aventure</option>
+                <option value=casse-Tête>Casse-Tête</option>
+                <option value=course>Course</option>
+                <option value=fps>FPS</option>
+                <option value=horreur>Horreur</option>
+                <option value=rpg>RPG</option>
+                <option value=sports>Sports</option>
+                <option value=survie>Survie</option>
+                <option value=zombie>Zombie</option>
+            </select><br>
+        </div>
+
+        <div class="bas">
+            <p id="auteur">Charlie Vu</p>
+        </div>        
+
+        <div class="contenu">
+            <h2 class="titres" id="titreContenu"> Meilleurs ventes </h2>
+            <main>
+                <div class="conteneur">
+                    <article>
+                        <div class="article">
+                            <img src="images/gta6.png" alt="Gta6" class="imageJeu">
+                            <p class="titreJeu">Grand Theft Auto VI</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/playstation.png" alt="Playstation">
+                                <img src="images/platformes/xbox.png" alt="xbox">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/spiderman.png" alt="Spider-Man" class="imageJeu">
+                            <p class="titreJeu">Marvel's Spider-Man 2</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/playstation.png" alt="Playstation">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/readyornot.png" alt="ReadyorNot" class="imageJeu">
+                            <p class="titreJeu">Ready or Not</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/invincible.png" alt="TheInvincible" class="imageJeu">
+                            <p class="titreJeu">The Invincible</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                                <img src="images/platformes/playstation.png" alt="Playstation">
+                                <img src="images/platformes/xbox.png" alt="xbox">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/hotwheels.png" alt="HotWheels" class="imageJeu">
+                            <p class="titreJeu">Hot Wheels</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/lethalcompany.png" alt="LethalCompany" class="imageJeu">
+                            <p class="titreJeu">Lethal Company</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/wolfamongus.png" alt="TheWolfAmongUs" class="imageJeu">
+                            <p class="titreJeu">The Wolf Among Us</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                                <img src="images/platformes/playstation.png" alt="Playstation">
+                                <img src="images/platformes/xbox.png" alt="xbox">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/thedaybefore.png" alt="TheDaysBefore" class="imageJeu">
+                            <p class="titreJeu">The Days Before</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                                <img src="images/platformes/playstation.png" alt="Playstation">
+                                <img src="images/platformes/xbox.png" alt="xbox">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/mw2.png" alt="MW2" class="imageJeu">
+                            <p class="titreJeu">Modern Warfare II</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                                <img src="images/platformes/playstation.png" alt="Playstation">
+                                <img src="images/platformes/xbox.png" alt="xbox">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="article">
+                            <img src="images/endlessdungeon.png" alt="EndlessDungeon" class="imageJeu">
+                            <p class="titreJeu">Endless Dungeon</p>
+                            <div class="imagePlatforme">
+                                <img src="images/platformes/pc.png" alt="Windows">
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </main>
+        </div>
+</body>
+
 </html>
