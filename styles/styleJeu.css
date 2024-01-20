@@ -1,18 +1,21 @@
 .grid {
     display: grid;
-    grid-template-rows: 4rem 2rem auto 4rem;
-    grid-template-columns: 250px 80fr 20fr;
+    grid-template-rows: 0 3rem auto 6rem;
+    grid-template-columns: 250px 20fr;
     grid-template-areas:
         "entete entete entete"
         "menu   liste  liste"
         "menu   main   main"
         "bas   bas    bas";
+
 }
 
 
 .imageJeu {
     width: 16rem;
-    height: 250px;
+    height: 16rem;
+    border-bottom: 2px solid white;
+    border-radius: 10px
 }
 
 .imagePlatforme img {
@@ -27,32 +30,56 @@
 }
 
 .base {
-    background-color: rgb(30,30,30);
+    background-color: rgb(0, 0, 0);
 }
 
 .liste {
     display: flex;
-    justify-items: center;
-    align-items: left;
-    background-color: rgb(10, 10, 10);
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(23, 23, 23);
     grid-area: liste;
+    border-top: 1px solid black;
+}
+
+.items {
+    margin: 10px;
 }
 
 .menu {
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px;
     grid-area: menu;
+    background-color: rgb(18, 18, 18);
+    border-right: 1px solid black;
+}
+
+.blockHaut img {
+    width: 50px;
+    height: 50px;
+    margin: 2rem;
+}
+
+#logoWebsite {
+    width: 100px;
+    height: 100px;
 }
 
 .blockHaut {
-    background-color: rgb(25, 25, 25);
-    padding: 20px;
+    background-color: rgb(20, 16, 16);
     grid-area: entete;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .contenu {
-    background-color: rgb(16, 17, 17);
+    background-color: rgb(17, 17, 17);
     padding: 20px;
     grid-area: main;
+
 }
 
 .bas {
@@ -63,23 +90,29 @@
 
 .conteneur {
     display: flex;
-
-    justify-items: center;
-    align-items: center;
     flex-wrap: wrap;
     grid-template-rows: 30rem 30rem 30rem;
     grid-template-columns: 20rem 20rem 20rem;
 
+    gap: 35px;
 }
 
 .article {
-    width: 16rem;
-    height: 370px;
-    margin: 15px;
-    background-color: rgb(22, 22, 22);
+    height: 24rem;
+    background-color: rgb(32, 32, 32);
+
+    justify-items: start;
+    align-content: space-around;
+
+    border: 2px solid white;
+    border-radius: 10px
 }
 
-
+.article:hover{
+    background-color: rgb(50, 50, 50);
+    transition: 0.1s ease-in-out;
+    box-shadow: 0 0 8px 2px white;
+}
 
 /* Pour les textes */
 
@@ -95,13 +128,14 @@
 }
 
 .menu a:hover {
-    color: grey;
+    transition: color 0.2s ease-out;
+    color: rgb(156, 156, 156);
 }
 
 .titres {
     color: white;
     font-family: 'Courier New', Courier, monospace;
-    font-weight: 200;
+    font-weight: 400;
 }
 
 #titreContenu {
@@ -112,22 +146,24 @@
     color: white;
     display: flex;
     justify-content: center;
-    font-family:'Courier New', Courier, monospace;
+    font-family: 'Courier New', Courier, monospace;
     font-weight: 100;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+
 }
 
 .menu a {
-    font-family:'Courier New', Courier, monospace;
+    font-family: 'Courier New', Courier, monospace;
     font-weight: 100;
 
 }
 
-.categorie li{
+.categorie li {
     width: 250px;
     height: 25px;
 }
 
-.categorie img{
+.categorie img {
     width: 25px;
     height: 25px;
 }
@@ -148,4 +184,9 @@
     color: white;
     font-family: 'Courier New', Courier, monospace;
     font-weight: 100;
+}
+
+#chercheJeu {
+    width: 15rem;
+    border-radius: 10px
 }

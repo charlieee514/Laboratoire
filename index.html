@@ -10,7 +10,12 @@
 
 <body class="base">
     <div class="blockHaut">
-        <h1 class="titres">Jeu Video 2024</h1>
+        <a href="?Accueil"><img src="./images/ghost2.png" alt="Logo Site" id="logoWebsite"></a>
+        <h1 class="titres">GHOST GAMES</h1>
+
+        <div>
+            <a href="?authentification"><img src="./images/login.png" alt="img authentification"></a>
+        </div>
     </div>
     <div class="grid">
         <nav class="menu categorie">
@@ -30,9 +35,10 @@
 
         <div class="liste">
 
-            <input type="text" name="chercheJeu" id="chercheJeu" placeholder="Recherche"> 
+            <input type="text" name="chercheJeu" id="chercheJeu" placeholder="Recherche" class="items"> 
 
-            <select name="listeCategorie" id="listeCategorie">
+            <select name="listeCategorie" id="listeCategorie" class="items">
+                <option style="display:none" value="">Catégorie</option>
                 <option value=action>Action</option>
                 <option value=aventure>Aventure</option>
                 <option value=casse-Tête>Casse-Tête</option>
@@ -43,12 +49,15 @@
                 <option value=sports>Sports</option>
                 <option value=survie>Survie</option>
                 <option value=zombie>Zombie</option>
-            </select><br>
-        </div>
+            </select>
 
-        <div class="bas">
-            <p id="auteur">Charlie Vu</p>
-        </div>        
+            <select name="listeSort" id="listeSort" class="items">
+                <option style="display:none" value="">Trie par</option>
+                <option value=prix>Prix</option>
+                <option value=rating>Rating</option>
+                <option value="nom">Nom</option>
+            </select>
+        </div>       
 
         <div class="contenu">
             <h2 class="titres" id="titreContenu"> Meilleurs ventes </h2>
@@ -99,10 +108,10 @@
 
                     <article>
                         <div class="article">
-                            <img src="images/hotwheels.png" alt="HotWheels" class="imageJeu">
-                            <p class="titreJeu">Hot Wheels</p>
+                            <img src="images/forza.png" alt="forza" class="imageJeu">
+                            <p class="titreJeu">Forza</p>
                             <div class="imagePlatforme">
-                                <img src="images/platformes/pc.png" alt="Windows">
+                                <img src="images/platformes/xbox.png" alt="xbox">
                             </div>
                         </div>
                     </article>
@@ -131,7 +140,7 @@
 
                     <article>
                         <div class="article">
-                            <img src="images/thedaybefore.png" alt="TheDaysBefore" class="imageJeu">
+                            <img src="images/thedaysbefore.png" alt="TheDaysBefore" class="imageJeu">
                             <p class="titreJeu">The Days Before</p>
                             <div class="imagePlatforme">
                                 <img src="images/platformes/pc.png" alt="Windows">
@@ -165,6 +174,11 @@
                 </div>
             </main>
         </div>
+
+        
+        <div class="bas">
+            <p id="auteur">Charlie Vu</p>
+        </div> 
 </body>
 
 </html>
