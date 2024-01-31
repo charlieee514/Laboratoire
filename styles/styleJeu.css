@@ -1,15 +1,14 @@
-.grid {
+body {
     display: grid;
-    grid-template-rows: 0 3rem auto 6rem;
-    grid-template-columns: 250px 20fr;
+    grid-template-rows: 8rem 3rem auto 6rem;
+    grid-template-columns: 250px auto;
     grid-template-areas:
-        "entete entete entete"
-        "menu   liste  liste"
-        "menu   main   main"
-        "bas   bas    bas";
+        "entete entete"
+        "menu   liste"
+        "menu   main"
+        "bas    bas";
 
 }
-
 
 .imageJeu {
     width: 16rem;
@@ -29,7 +28,7 @@
     justify-content: space-evenly;
 }
 
-.base {
+body {
     background-color: rgb(0, 0, 0);
 }
 
@@ -46,7 +45,7 @@
     margin: 10px;
 }
 
-.menu {
+.categorie {
     display: flex;
     flex-direction: column;
 
@@ -56,7 +55,7 @@
     border-right: 1px solid black;
 }
 
-.blockHaut img {
+header img {
     width: 50px;
     height: 50px;
     margin: 2rem;
@@ -67,7 +66,7 @@
     height: 100px;
 }
 
-.blockHaut {
+header {
     background-color: rgb(20, 16, 16);
     grid-area: entete;
     display: flex;
@@ -75,14 +74,14 @@
     align-items: center;
 }
 
-.contenu {
+main {
     background-color: rgb(17, 17, 17);
     padding: 20px;
     grid-area: main;
 
 }
 
-.bas {
+footer {
     background-color: rgb(0, 0, 0);
     padding: 20px;
     grid-area: bas;
@@ -97,7 +96,7 @@
     gap: 35px;
 }
 
-.article {
+article {
     height: 24rem;
     background-color: rgb(32, 32, 32);
 
@@ -108,26 +107,16 @@
     border-radius: 10px
 }
 
-.article:hover{
+article:hover{
     background-color: rgb(50, 50, 50);
     transition: 0.1s ease-in-out;
     box-shadow: 0 0 8px 2px white;
+    transform:translateY(-8px)
 }
 
 /* Pour les textes */
 
-.menu a {
-    text-decoration: none;
-    color: white;
-    font-size: 20px;
-}
-
-.menu li {
-    list-style: none;
-    margin-bottom: 20px;
-}
-
-.menu a:hover {
+.categorie a:hover {
     transition: color 0.2s ease-out;
     color: rgb(156, 156, 156);
 }
@@ -152,15 +141,21 @@
 
 }
 
-.menu a {
+.categorie a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+
     font-family: 'Courier New', Courier, monospace;
     font-weight: 100;
-
 }
 
 .categorie li {
     width: 250px;
     height: 25px;
+
+    list-style: none;
+    margin-bottom: 20px;
 }
 
 .categorie img {

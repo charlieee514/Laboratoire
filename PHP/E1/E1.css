@@ -1,0 +1,14 @@
+table.damier td {
+    border: 1px solid black;
+}
+
+table {
+    border-spacing:0cap;
+    padding: 5px;
+    text-align: center;
+}
+
+table.damier td.gris{
+    background-color: grey;
+    color: white;
+}
