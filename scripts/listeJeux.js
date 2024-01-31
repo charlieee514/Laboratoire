@@ -55,7 +55,8 @@ function afficherCategories(categorie) {
         //event listener sur les liens
         lienCategorie.addEventListener('click', (event) => {
             event.preventDefault();
-            filtrerJeux(categorie.nom.toLowerCase());
+            selectedCategorie = categorie.nom.toLowerCase();
+            filtrerJeux(selectedCategorie, selectedPlatform);
         });
 
         liCategorie.appendChild(imgCategorie);
@@ -65,28 +66,45 @@ function afficherCategories(categorie) {
     });
 }
 
-function filtrerJeux(categorie) {
+function filtrerJeux(categorie, platforme) {
     let article = document.querySelectorAll('article');
     article.forEach(x => x.remove());
 
-    let selectedPlatform = document.getElementById('listeSort').value.toLowerCase();
-
     let titreContenu = document.getElementById('titreContenu');
-    
-    if (selectedPlatform !== "none" && selectedPlatform !== "all") {
-        let jeuxFiltres = listeJeux.filter(jeu =>
-            jeu.categorie.toLowerCase() === categorie.toLowerCase() &&
-            jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform)
-        );
-        afficherJeux(jeuxFiltres);
+
+    if (selectedCategorie) {
+        if (selectedPlatform !== "none" && selectedPlatform !== "all") {
+            let jeuxFiltres = listeJeux.filter(jeu =>
+                jeu.categorie.toLowerCase() === categorie.toLowerCase() &&
+                jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform)
+            );
+            afficherJeux(jeuxFiltres);
+        } else {
+            afficherJeux(listeJeux.filter(jeu => jeu.categorie.toLowerCase() === categorie.toLowerCase()));
+        }
+        titreContenu.textContent = categorie.charAt(0).toUpperCase() + categorie.slice(1);
     } else {
-        afficherJeux(listeJeux.filter(jeu => jeu.categorie.toLowerCase() === categorie.toLowerCase()));
+        let jeuxFiltres = listeJeux.filter(jeu =>
+            jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform))
+            afficherJeux(jeuxFiltres);
     }
-    titreContenu.textContent = categorie.charAt(0).toUpperCase() + categorie.slice(1);
 }
 
+//event listener sur les platformes
 
+let selectedPlatform;
+let selectedCategorie;
 
+document.addEventListener('DOMContentLoaded', function () {
+    const listePlatforme = document.getElementById('listeSort');
+    if (listePlatforme) {
+        listePlatforme.addEventListener('change', function (event) {
+            event.preventDefault();
+            selectedPlatform = listePlatforme.value.toLowerCase();
+            filtrerJeux(selectedCategorie, selectedPlatform)
+        });
+    }
+})
 
 /*
 
