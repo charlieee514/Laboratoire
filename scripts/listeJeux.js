@@ -1,9 +1,14 @@
 function afficherJeux(tab) {
+    let article = document.querySelectorAll('article');
+    article.forEach(x => x.remove());
+
     let contenu = document.querySelector('.conteneur');
 
     tab.forEach(jeu => {
         let article = document.createElement('article');
         article.setAttribute('class', jeu.categorie);
+
+        article.setAttribute('id', jeu.id);
 
         let imgArticle = document.createElement('img');
         imgArticle.setAttribute('src', jeu.urlImage);
@@ -30,6 +35,52 @@ function afficherJeux(tab) {
             }
         });
 
+        let optionsDiv = document.createElement('div');
+        optionsDiv.setAttribute('class', 'options');
+
+        let modifierBtn = document.createElement('button');
+        modifierBtn.setAttribute('class', 'btnAjouter modifierBtn');
+
+        modifierBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+            let bouton = event.target;
+            let articleParent = bouton.closest('article');
+
+            if (articleParent) {
+                let idJeu = articleParent.getAttribute('id');
+                let titreJeu = articleParent.querySelector('.titreJeu').textContent;
+                let urlImage = articleParent.querySelector('.imageJeu').getAttribute('src');
+                let plateformes = Array.from(articleParent.querySelectorAll('.imagePlatforme img')).map(img => img.getAttribute('alt'));
+                let categorieJeu = articleParent.classList[0];
+
+                let jeuAModifier = {
+                    id: idJeu,
+                    titre: titreJeu,
+                    urlImage: urlImage,
+                    plateformes: plateformes,
+                    categorie: categorieJeu
+                };
+
+                genererFormulaireAjout(jeuAModifier);
+                document.getElementById('divAjouter').style.display = 'block';
+            }
+        });
+
+        let supprimerBtn = document.createElement('button');
+        supprimerBtn.setAttribute('class', 'supprimerBtn');
+
+        supprimerBtn.addEventListener('click', function() {
+            let confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?");
+            if (confirmation) {
+                let idASupprimer = article.getAttribute('id');
+                supprimerArticle(idASupprimer);
+            }
+        });
+
+        optionsDiv.appendChild(modifierBtn);
+        optionsDiv.appendChild(supprimerBtn);
+
+        article.appendChild(optionsDiv);
         article.appendChild(imgArticle);
         article.appendChild(titreJeu);
         article.appendChild(divPlatform);
@@ -38,6 +89,43 @@ function afficherJeux(tab) {
     });
     let main = document.querySelector('main');
     main.appendChild(contenu);
+
+
+    let boutonGestions = document.getElementsByClassName('modifierBtn');
+    for (let i = 0; i < boutonGestions.length; i++) {
+        boutonGestions[i].addEventListener('click', function () {
+            document.getElementById('formAjout').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                let idModifier = boutonGestions[i].closest('article').id;
+                let titre = document.getElementById('newTitre').value;
+                let urlImage = document.getElementById('newUrl').value;
+                let categorie = document.getElementById('newCate').value;
+                let plateformes = Array.from(document.getElementById('newPlat').selectedOptions).map(option => option.value);
+
+                let nouveauJeu = {
+                    id: idModifier,
+                    titre: titre,
+                    urlImage: urlImage,
+                    categorie: categorie,
+                    plateformes: plateformes
+                };
+
+
+                let index = listeJeux.findIndex(jeu => jeu.id === idModifier);
+
+                if (index !== -1) {
+                    listeJeux[index] = nouveauJeu;
+                }
+
+                afficherJeux(listeJeux);
+
+                let formAjout = document.getElementById('divAjouter');
+                formAjout.remove();
+
+            })
+        });
+    }
 }
 
 function afficherCategories(categorie) {
@@ -67,35 +155,38 @@ function afficherCategories(categorie) {
 }
 
 function filtrerJeux(categorie, platforme) {
-    let article = document.querySelectorAll('article');
-    article.forEach(x => x.remove());
-
     let titreContenu = document.getElementById('titreContenu');
-
+    let jeuxFiltres;
     if (selectedCategorie) {
         if (selectedPlatform !== "none" && selectedPlatform !== "all") {
-            let jeuxFiltres = listeJeux.filter(jeu =>
+            jeuxFiltres = listeJeux.filter(jeu =>
                 jeu.categorie.toLowerCase() === categorie.toLowerCase() &&
                 jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform)
             );
             afficherJeux(jeuxFiltres);
         } else {
             afficherJeux(listeJeux.filter(jeu => jeu.categorie.toLowerCase() === categorie.toLowerCase()));
+            console.log("ici")
         }
         titreContenu.textContent = categorie.charAt(0).toUpperCase() + categorie.slice(1);
     } else {
-        let jeuxFiltres = listeJeux.filter(jeu =>
-            jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform))
+        if (platforme !== "all") {
+            jeuxFiltres = listeJeux.filter(jeu =>
+                jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform))
             afficherJeux(jeuxFiltres);
+        } else {
+            afficherJeux(listeJeux);
+        }
     }
 }
 
-//event listener sur les platformes
-
-let selectedPlatform;
+let selectedPlatform = "none";
 let selectedCategorie;
 
 document.addEventListener('DOMContentLoaded', function () {
+    afficherJeux(listeJeux);
+    afficherCategories(listeCategories);
+
     const listePlatforme = document.getElementById('listeSort');
     if (listePlatforme) {
         listePlatforme.addEventListener('change', function (event) {
@@ -104,22 +195,129 @@ document.addEventListener('DOMContentLoaded', function () {
             filtrerJeux(selectedCategorie, selectedPlatform)
         });
     }
+    document.getElementById('ajouterJeu').addEventListener('click', function () {
+        genererFormulaireAjout(null);
+
+        document.getElementById('divAjouter').style.display = 'block';
+
+        document.getElementById('formAjout').addEventListener('submit', function (event) {
+            event.preventDefault();
+            console.log(1)
+
+
+            let titre = document.getElementById('newTitre').value;
+            let urlImage = document.getElementById('newUrl').value;
+            let categorie = document.getElementById('newCate').value;
+            let plateformes = Array.from(document.getElementById('newPlat').selectedOptions).map(option => option.value);
+
+            let nouveauJeu = {
+                id: "article" + (listeJeux.length + 1),
+                titre: titre,
+                urlImage: urlImage,
+                categorie: categorie,
+                plateformes: plateformes
+            };
+
+            console.log(nouveauJeu);
+            listeJeux.push(nouveauJeu);
+
+            afficherJeux(listeJeux);
+
+            let formAjout = document.getElementById('divAjouter');
+            formAjout.remove();
+
+        });
+
+    });
 })
 
-/*
+function supprimerArticle(idASupprimer) {
+    listeJeux = listeJeux.filter(jeu => jeu.id !== idASupprimer);
+    afficherJeux(listeJeux); 
+}
 
-<li><img src="./images/categories/action.png" alt="Catégorie action"> <a href="?categorie=1">Action</a></li>
+function genererFormulaireAjout(modifier) {
+    let divAjouter = document.createElement('div');
+    divAjouter.id = 'divAjouter';
 
-<div class="contenu">
-            <article class="Action">
-                <img src="images/gta6.png" alt="Gta6" class="imageJeu">
-                <p class="titreJeu">Grand Theft Auto VI</p>
-                <div class="imagePlatforme">
-                    <img src="images/platformes/playstation.png" alt="Playstation" class="Playstation">
-                    <img src="images/platformes/xbox.png" alt="Xbox" class="Xbox">
-                </div>
-            </article>
-*/
+    let formAjout = document.createElement('form');
+    formAjout.id = 'formAjout';
+    formAjout.classList.add('backdrop');
+
+    let labels = ['Titre:', 'URL image:', 'Catégorie:', 'Plateforme:'];
+    let inputTypes = ['text', 'text'];
+    let selectOptions = [
+        ['Action', 'Aventure', 'Casse-Tête', 'Course', 'FPS', 'Horreur', 'RPG', 'Sports', 'Survie', 'Zombie'],
+        ['PC', 'Playstation', 'Xbox']
+    ];
+    let ids = ['newTitre', 'newUrl', 'newCate', 'newPlat'];
+
+    let input;
+
+    for (let i = 0; i < labels.length; i++) {
+        let label = document.createElement('label');
+        label.textContent = labels[i];
+        formAjout.appendChild(label);
+
+        if (i < 2) {
+            input = document.createElement('input');
+            input.type = inputTypes[i];
+            input.id = ids[i];
+            input.name = ids[i];
+        } else {
+            input = document.createElement('select');
+            input.id = ids[i];
+            if (labels[i].includes('Plateforme')) {
+                input.multiple = true;
+                input.size = 3;
+            }
+
+            for (let option of selectOptions[i - 2]) {
+                let optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                input.appendChild(optionElement);
+            }
+        }
+
+        if (modifier) {
+            switch (ids[i]) {
+                case 'newTitre':
+                    input.value = modifier.titre;
+                    break;
+                case 'newUrl':
+                    input.value = modifier.urlImage;
+                    break;
+                case 'newCate':
+                    input.value = modifier.categorie;
+                    break;
+            }
+        }
+
+        formAjout.appendChild(input);
+        formAjout.appendChild(document.createElement('br'));
+    }
+
+
+    let buttonForm = document.createElement('button');
+    if (!modifier) {
+        buttonForm.type = 'submit'
+        buttonForm.id = 'ajouter'
+        buttonForm.textContent = 'Ajouter';
+    } else {
+        buttonForm.type = 'submit'
+        buttonForm.id = 'modifier'
+        buttonForm.textContent = 'Modifier';
+    }
+    formAjout.appendChild(buttonForm);
+
+    divAjouter.appendChild(formAjout);
+
+    document.querySelector('main').appendChild(divAjouter);
+
+    
+
+}
 
 //1
 let listeJeux = [
@@ -142,14 +340,14 @@ let listeJeux = [
         titre: "Ready or Not",
         urlImage: "images/readyornot.png",
         categorie: "FPS",
-        plateformes: ["Windows"]
+        plateformes: ["PC"]
     },
     {
         id: "article4",
         titre: "The Invincible",
         urlImage: "images/invincible.png",
         categorie: "Survie",
-        plateformes: ["Windows", "Playstation", "Xbox"]
+        plateformes: ["PC", "Playstation", "Xbox"]
     },
     {
         id: "article5",
@@ -163,38 +361,36 @@ let listeJeux = [
         titre: "Lethal Company",
         urlImage: "images/lethalcompany.png",
         categorie: "Horreur",
-        plateformes: ["Windows"]
+        plateformes: ["PC"]
     },
     {
         id: "article7",
         titre: "The Wolf Among Us",
         urlImage: "images/wolfamongus.png",
         categorie: "RPG",
-        plateformes: ["Windows", "Playstation", "Xbox"]
+        plateformes: ["PC", "Playstation", "Xbox"]
     },
     {
         id: "article8",
         titre: "The Days Before",
         urlImage: "images/thedaysbefore.png",
         categorie: "Zombie",
-        plateformes: ["Windows", "Playstation", "Xbox"]
+        plateformes: ["PC", "Playstation", "Xbox"]
     },
     {
         id: "article9",
         titre: "Modern Warfare II",
         urlImage: "images/mw2.png",
         categorie: "FPS",
-        plateformes: ["Windows", "Playstation", "Xbox"]
+        plateformes: ["PC", "Playstation", "Xbox"]
     },
     {
         id: "article10",
         titre: "Endless Dungeon",
         urlImage: "images/endlessdungeon.png",
         categorie: "Casse-Tête",
-        plateformes: ["Windows"]
+        plateformes: ["PC"]
     }];
-
-console.log(listeJeux);
 
 //2
 let listeCategories = [
@@ -249,11 +445,10 @@ let listeCategories = [
         imageUrl: "images/categories/zombie.png"
     }];
 
-
 let ListePlateformes = [
     {
         id: "pc",
-        nom: "Windows",
+        nom: "PC",
         imageUrl: "images/platformes/pc.png"
     },
     {
@@ -266,8 +461,6 @@ let ListePlateformes = [
         nom: "Xbox",
         imageUrl: "images/platformes/xbox.png"
     }];
-
-
 
 // fonction supplementaire
 function getListeJeux() {

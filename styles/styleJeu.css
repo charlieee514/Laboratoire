@@ -103,18 +103,24 @@ article {
     justify-items: start;
     align-content: space-around;
 
-    border: 2px solid white;
+    border: 1px solid white;
     border-radius: 10px
 }
 
-article:hover{
+article:hover {
     background-color: rgb(50, 50, 50);
     transition: 0.1s ease-in-out;
     box-shadow: 0 0 8px 2px white;
-    transform:translateY(-8px)
+    transform: translateY(-8px)
 }
 
-/* Pour les textes */
+#divAjouter {
+    display: none;
+}
+
+#idPlatforme {
+    display: none;
+}
 
 .categorie a:hover {
     transition: color 0.2s ease-out;
@@ -184,4 +190,106 @@ article:hover{
 #chercheJeu {
     width: 15rem;
     border-radius: 10px
+}
+
+/* div pour ajouter un jeu */
+
+#divAjouter {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    z-index: 9999;
+}
+
+#formAjout label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#formAjout input,
+#formAjout select {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+}
+
+#formAjout button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+#formAjout button:hover {
+    background-color: #317234;
+}
+
+.btnFonctions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#formAjout {
+    position: relative;
+    margin: 0 auto;
+    top: 7rem;
+    max-width: 600px;
+}
+/*bouton pour modifier ou supprimer l'article*/
+.jeu {
+    position: relative;
+}
+
+.options {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    
+}
+
+.modifierBtn,
+.supprimerBtn {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    margin-left: 5px;
+
+    opacity: 0.7;
+
+    width: 30px;
+    height: 30px;
+    background-size: 80%; 
+    background-repeat: no-repeat;
+    background-position: center; 
+    cursor: pointer;
+}
+
+.modifierBtn {
+    background-image: url('../images/pencil.png');
+
+}
+
+.supprimerBtn {
+    background-image: url('../images/x-button.png');
+
 }

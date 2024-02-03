@@ -13,7 +13,11 @@
     <header>
         <a href="?Accueil"><img src="./images/ghost2.png" alt="Logo Site" id="logoWebsite"></a>
         <h1 class="titres">GHOST GAMES</h1>
-        <a href="?authentification"><img src="./images/login.png" alt="img authentification"></a>
+
+        <section class="btnFonctions">
+            <a href="?authentification"><img src="./images/login.png" alt="img authentification"></a>
+            <button class="btnAjouter" id="ajouterJeu">Ajouter un jeu</button>
+        </section>
     </header>
 
     <nav class="categorie">
@@ -24,11 +28,11 @@
         <input type="text" name="chercheJeu" id="chercheJeu" placeholder="Recherche" class="items">
 
         <select name="listeSort" id="listeSort" class="platformeFiltre">
-            <option style="display:none" value="none">Platforme</option>
-            <option value=all>All</option>
-            <option value=windows>PC</option>
-            <option value=playstation>Playstation</option>
-            <option value="xbox">Xbox</option>
+            <option id="idPlatforme" value="none">Platforme</option>
+            <option value="all">All</option>
+            <option value="PC">PC</option>
+            <option value="Playstation">Playstation</option>
+            <option value="Xbox">Xbox</option>
         </select>
     </nav>
 
@@ -38,6 +42,7 @@
 
         </div>
     </main>
+
 
     <footer>
         <p id="auteur">Charlie Vu</p>
