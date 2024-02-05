@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(nouveauJeu);
             listeJeux.push(nouveauJeu);
 
-            afficherJeux(listeJeux);
+            filtrerJeux(selectedCategorie, selectedPlatform);
 
             let formAjout = document.getElementById('divAjouter');
             formAjout.remove();
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function supprimerArticle(idASupprimer) {
     listeJeux = listeJeux.filter(jeu => jeu.id !== idASupprimer);
-    afficherJeux(listeJeux);
+    filtrerJeux(selectedCategorie, selectedPlatform);
 }
 
 function genererFormulaireAjout(modifier) {
