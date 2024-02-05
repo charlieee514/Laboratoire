@@ -23,7 +23,7 @@ function afficherJeux(tab) {
         divPlatform.setAttribute('class', "imagePlatforme");
 
         jeu.plateformes.forEach(plateforme => {
-            const console = ListePlateformes.find(p => p.nom === plateforme);
+            const console = listePlateformes.find(p => p.nom === plateforme);
 
             if (plateforme) {
                 let imgPlatforme = document.createElement('img');
@@ -69,7 +69,7 @@ function afficherJeux(tab) {
         let supprimerBtn = document.createElement('button');
         supprimerBtn.setAttribute('class', 'supprimerBtn');
 
-        supprimerBtn.addEventListener('click', function() {
+        supprimerBtn.addEventListener('click', function () {
             let confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?");
             if (confirmation) {
                 let idASupprimer = article.getAttribute('id');
@@ -118,7 +118,7 @@ function afficherJeux(tab) {
                     listeJeux[index] = nouveauJeu;
                 }
 
-                afficherJeux(listeJeux);
+                filtrerJeux(selectedCategorie, selectedPlatform);
 
                 let formAjout = document.getElementById('divAjouter');
                 formAjout.remove();
@@ -157,11 +157,11 @@ function afficherCategories(categorie) {
 function filtrerJeux(categorie, platforme) {
     let titreContenu = document.getElementById('titreContenu');
     let jeuxFiltres;
-    if (selectedCategorie) {
-        if (selectedPlatform !== "none" && selectedPlatform !== "all") {
+    if (categorie) {
+        if (categorie !== "none" && platforme !== "all") {
             jeuxFiltres = listeJeux.filter(jeu =>
                 jeu.categorie.toLowerCase() === categorie.toLowerCase() &&
-                jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform)
+                jeu.plateformes.some(platformes => platformes.toLowerCase() === platforme)
             );
             afficherJeux(jeuxFiltres);
         } else {
@@ -170,9 +170,10 @@ function filtrerJeux(categorie, platforme) {
         }
         titreContenu.textContent = categorie.charAt(0).toUpperCase() + categorie.slice(1);
     } else {
+        titreContenu.textContent = "Meilleurs ventes";
         if (platforme !== "all") {
             jeuxFiltres = listeJeux.filter(jeu =>
-                jeu.plateformes.some(platforme => platforme.toLowerCase() === selectedPlatform))
+                jeu.plateformes.some(platformes => platformes.toLowerCase() === platforme))
             afficherJeux(jeuxFiltres);
         } else {
             afficherJeux(listeJeux);
@@ -188,13 +189,14 @@ document.addEventListener('DOMContentLoaded', function () {
     afficherCategories(listeCategories);
 
     const listePlatforme = document.getElementById('listeSort');
-    if (listePlatforme) {
-        listePlatforme.addEventListener('change', function (event) {
-            event.preventDefault();
-            selectedPlatform = listePlatforme.value.toLowerCase();
-            filtrerJeux(selectedCategorie, selectedPlatform)
-        });
-    }
+    selectedPlatform = "all";
+
+    listePlatforme.addEventListener('change', function (event) {
+        event.preventDefault();
+        selectedPlatform = listePlatforme.value.toLowerCase();
+        filtrerJeux(selectedCategorie, selectedPlatform)
+    });
+
     document.getElementById('ajouterJeu').addEventListener('click', function () {
         genererFormulaireAjout(null);
 
@@ -203,7 +205,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('formAjout').addEventListener('submit', function (event) {
             event.preventDefault();
             console.log(1)
-
 
             let titre = document.getElementById('newTitre').value;
             let urlImage = document.getElementById('newUrl').value;
@@ -229,11 +230,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     });
+
+    document.getElementById("toutCategorie").addEventListener('click', function (event) {
+        event.preventDefault();
+        selectedCategorie = null;
+        filtrerJeux(selectedCategorie, selectedPlatform);
+    })
 })
 
 function supprimerArticle(idASupprimer) {
     listeJeux = listeJeux.filter(jeu => jeu.id !== idASupprimer);
-    afficherJeux(listeJeux); 
+    afficherJeux(listeJeux);
 }
 
 function genererFormulaireAjout(modifier) {
@@ -300,12 +307,11 @@ function genererFormulaireAjout(modifier) {
 
 
     let buttonForm = document.createElement('button');
+    buttonForm.type = 'submit'
     if (!modifier) {
-        buttonForm.type = 'submit'
         buttonForm.id = 'ajouter'
         buttonForm.textContent = 'Ajouter';
     } else {
-        buttonForm.type = 'submit'
         buttonForm.id = 'modifier'
         buttonForm.textContent = 'Modifier';
     }
@@ -315,7 +321,6 @@ function genererFormulaireAjout(modifier) {
 
     document.querySelector('main').appendChild(divAjouter);
 
-    
 
 }
 
@@ -445,7 +450,7 @@ let listeCategories = [
         imageUrl: "images/categories/zombie.png"
     }];
 
-let ListePlateformes = [
+let listePlateformes = [
     {
         id: "pc",
         nom: "PC",
@@ -462,7 +467,9 @@ let ListePlateformes = [
         imageUrl: "images/platformes/xbox.png"
     }];
 
-// fonction supplementaire
+
+
+/*
 function getListeJeux() {
     let articlesHTML = document.querySelectorAll('article');
     let articles = [];
@@ -505,3 +512,4 @@ function getListeCategorie() {
     console.log(categories);
     return categories;
 }
+*/
