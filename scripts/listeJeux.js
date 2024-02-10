@@ -1,3 +1,4 @@
+let userAdmin = 'none';
 function afficherJeux(tab) {
     let article = document.querySelectorAll('article');
     article.forEach(x => x.remove());
@@ -23,13 +24,13 @@ function afficherJeux(tab) {
         divPlatform.setAttribute('class', "imagePlatforme");
 
         jeu.plateformes.forEach(plateforme => {
-            const console = listePlateformes.find(p => p.nom === plateforme);
+            const plate = listePlateformes.find(p => p.titre === plateforme);
 
             if (plateforme) {
                 let imgPlatforme = document.createElement('img');
-                imgPlatforme.setAttribute('src', console.imageUrl);
-                imgPlatforme.setAttribute('alt', console.id);
-                imgPlatforme.setAttribute('class', console.nom);
+                imgPlatforme.setAttribute('src', plate.url_icone);
+                imgPlatforme.setAttribute('alt', plate.id);
+                imgPlatforme.setAttribute('class', plate.titre);
 
                 divPlatform.appendChild(imgPlatforme);
             }
@@ -38,47 +39,51 @@ function afficherJeux(tab) {
         let optionsDiv = document.createElement('div');
         optionsDiv.setAttribute('class', 'options');
 
-        let modifierBtn = document.createElement('button');
-        modifierBtn.setAttribute('class', 'btnAjouter modifierBtn');
 
-        modifierBtn.addEventListener('click', function (event) {
-            event.preventDefault();
-            let bouton = event.target;
-            let articleParent = bouton.closest('article');
+        if (userAdmin == "admin") {
+            let modifierBtn = document.createElement('button');
+            modifierBtn.setAttribute('class', 'btnAjouter modifierBtn');
 
-            if (articleParent) {
-                let idJeu = articleParent.getAttribute('id');
-                let titreJeu = articleParent.querySelector('.titreJeu').textContent;
-                let urlImage = articleParent.querySelector('.imageJeu').getAttribute('src');
-                let plateformes = Array.from(articleParent.querySelectorAll('.imagePlatforme img')).map(img => img.getAttribute('alt'));
-                let categorieJeu = articleParent.classList[0];
+            let supprimerBtn = document.createElement('button');
+            supprimerBtn.setAttribute('class', 'supprimerBtn');
 
-                let jeuAModifier = {
-                    id: idJeu,
-                    titre: titreJeu,
-                    urlImage: urlImage,
-                    plateformes: plateformes,
-                    categorie: categorieJeu
-                };
 
-                genererFormulaireAjout(jeuAModifier);
-                document.getElementById('divAjouter').style.display = 'block';
-            }
-        });
+            modifierBtn.addEventListener('click', function (event) {
+                event.preventDefault();
+                let bouton = event.target;
+                let articleParent = bouton.closest('article');
 
-        let supprimerBtn = document.createElement('button');
-        supprimerBtn.setAttribute('class', 'supprimerBtn');
+                if (articleParent) {
+                    let idJeu = articleParent.getAttribute('id');
+                    let titreJeu = articleParent.querySelector('.titreJeu').textContent;
+                    let urlImage = articleParent.querySelector('.imageJeu').getAttribute('src');
+                    let plateformes = Array.from(articleParent.querySelectorAll('.imagePlatforme img')).map(img => img.getAttribute('alt'));
+                    let categorieJeu = articleParent.classList[0];
 
-        supprimerBtn.addEventListener('click', function () {
-            let confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?");
-            if (confirmation) {
-                let idASupprimer = article.getAttribute('id');
-                supprimerArticle(idASupprimer);
-            }
-        });
+                    let jeuAModifier = {
+                        id: idJeu,
+                        titre: titreJeu,
+                        urlImage: urlImage,
+                        plateformes: plateformes,
+                        categorie: categorieJeu
+                    };
 
-        optionsDiv.appendChild(modifierBtn);
-        optionsDiv.appendChild(supprimerBtn);
+                    genererFormulaireAjout(jeuAModifier);
+                    document.getElementById('divAjouter').style.display = 'block';
+                }
+            });
+
+            supprimerBtn.addEventListener('click', function () {
+                let confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?");
+                if (confirmation) {
+                    let idASupprimer = article.getAttribute('id');
+                    supprimerArticle(parseInt(idASupprimer));
+                }
+            });
+
+            optionsDiv.appendChild(modifierBtn);
+            optionsDiv.appendChild(supprimerBtn);
+        }
 
         article.appendChild(optionsDiv);
         article.appendChild(imgArticle);
@@ -97,7 +102,7 @@ function afficherJeux(tab) {
             document.getElementById('formAjout').addEventListener('submit', function (event) {
                 event.preventDefault();
 
-                let idModifier = boutonGestions[i].closest('article').id;
+                let idModifier = parseInt(boutonGestions[i].closest('article').id);
                 let titre = document.getElementById('newTitre').value;
                 let urlImage = document.getElementById('newUrl').value;
                 let categorie = document.getElementById('newCate').value;
@@ -110,6 +115,8 @@ function afficherJeux(tab) {
                     categorie: categorie,
                     plateformes: plateformes
                 };
+                console.log(nouveauJeu);
+                console.log(listeJeux);
 
 
                 let index = listeJeux.findIndex(jeu => jeu.id === idModifier);
@@ -133,17 +140,17 @@ function afficherCategories(categorie) {
     categorie.forEach(categorie => {
         let liCategorie = document.createElement('li');
         let imgCategorie = document.createElement('img');
-        imgCategorie.setAttribute('src', categorie.imageUrl);
-        imgCategorie.setAttribute('alt', categorie.nom);
+        imgCategorie.setAttribute('src', categorie.url_image);
+        imgCategorie.setAttribute('alt', categorie.titre);
 
         let lienCategorie = document.createElement('a');
         lienCategorie.setAttribute('href', "#");
-        lienCategorie.textContent = categorie.nom;
+        lienCategorie.textContent = categorie.titre;
 
         //event listener sur les liens
         lienCategorie.addEventListener('click', (event) => {
             event.preventDefault();
-            selectedCategorie = categorie.nom.toLowerCase();
+            selectedCategorie = categorie.titre.toLowerCase();
             filtrerJeux(selectedCategorie, selectedPlatform);
         });
 
@@ -166,7 +173,6 @@ function filtrerJeux(categorie, platforme) {
             afficherJeux(jeuxFiltres);
         } else {
             afficherJeux(listeJeux.filter(jeu => jeu.categorie.toLowerCase() === categorie.toLowerCase()));
-            console.log("ici")
         }
         titreContenu.textContent = categorie.charAt(0).toUpperCase() + categorie.slice(1);
     } else {
@@ -197,39 +203,50 @@ document.addEventListener('DOMContentLoaded', function () {
         filtrerJeux(selectedCategorie, selectedPlatform)
     });
 
-    document.getElementById('ajouterJeu').addEventListener('click', function () {
-        genererFormulaireAjout(null);
+    if (userAdmin == "admin") {
 
-        document.getElementById('divAjouter').style.display = 'block';
+        let btnAjouterJeu = document.createElement('button');
+        btnAjouterJeu.textContent = 'Ajouter un jeu';
+        btnAjouterJeu.setAttribute('class', 'btnAjouter');
+        btnAjouterJeu.setAttribute('id', 'ajouterJeu');
 
-        document.getElementById('formAjout').addEventListener('submit', function (event) {
-            event.preventDefault();
-            console.log(1)
+        let sectionBtnFonctions = document.querySelector('.btnFonctions');
+        sectionBtnFonctions.appendChild(btnAjouterJeu);
 
-            let titre = document.getElementById('newTitre').value;
-            let urlImage = document.getElementById('newUrl').value;
-            let categorie = document.getElementById('newCate').value;
-            let plateformes = Array.from(document.getElementById('newPlat').selectedOptions).map(option => option.value);
+        btnAjouterJeu.addEventListener('click', function () {
+            genererFormulaireAjout(null);
 
-            let nouveauJeu = {
-                id: "article" + (listeJeux.length + 1),
-                titre: titre,
-                urlImage: urlImage,
-                categorie: categorie,
-                plateformes: plateformes
-            };
+            document.getElementById('divAjouter').style.display = 'block';
 
-            console.log(nouveauJeu);
-            listeJeux.push(nouveauJeu);
+            document.getElementById('formAjout').addEventListener('submit', function (event) {
+                event.preventDefault();
 
-            filtrerJeux(selectedCategorie, selectedPlatform);
+                let titre = document.getElementById('newTitre').value;
+                let urlImage = document.getElementById('newUrl').value;
+                let categorie = document.getElementById('newCate').value;
+                let plateformes = Array.from(document.getElementById('newPlat').selectedOptions).map(option => option.value);
 
-            let formAjout = document.getElementById('divAjouter');
-            formAjout.remove();
+                let nouveauJeu = {
+                    id: listeJeux.length + 1,
+                    titre: titre,
+                    urlImage: urlImage,
+                    categorie: categorie,
+                    plateformes: plateformes
+                };
+
+console.log(listeJeux)
+
+                listeJeux.push(nouveauJeu);
+
+                filtrerJeux(selectedCategorie, selectedPlatform);
+
+                let formAjout = document.getElementById('divAjouter');
+                formAjout.remove();
+
+            });
 
         });
-
-    });
+    }
 
     document.getElementById("toutCategorie").addEventListener('click', function (event) {
         event.preventDefault();
@@ -324,7 +341,9 @@ function genererFormulaireAjout(modifier) {
 
 }
 
+
 //1
+/*
 let listeJeux = [
     {
         id: "article1",
@@ -467,7 +486,7 @@ let listePlateformes = [
         imageUrl: "images/platformes/xbox.png"
     }];
 
-
+*/
 
 /*
 function getListeJeux() {
