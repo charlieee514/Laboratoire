@@ -31,12 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="bg-primary text-white text-center py-3">
+    <header>
       <h1>GHOST GAMES LOGIN</h1>
     </header>
 
-    <div class="container my-4">
-      <section id="authentification" class="mb-4">
+    <div>
+      <section id="authentification">
         <h2>Authentification</h2>
         <?php if($error): ?>
             <div class="alert alert-danger"><?= $error ?></div>
@@ -60,16 +60,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             required
           />
 
-          <button type="submit" class="btn btn-primary mt-2 .align-top">
+          <button type="submit">
             Se connecter
-          </button> <button class="btn btn-secondary mt-2" onclick = "window.location.href='./newUser.php';">Créer un compte</button>
+          </button> <button onclick = "window.location.href='./newUser.php';">Créer un compte</button>
           
         </form>
       </section>
     </div>
 
-    <footer class="text-white text-center py-3 fixed-bottom">
-      <p>&copy; 2024 Babillard de Post-its Électroniques</p>
+    <footer>
+      <p>&copy; 2024 GHOST GAMES</p>
     </footer>
   </body>
 </html>
