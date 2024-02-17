@@ -1,4 +1,7 @@
 let userAdmin = 'none';
+const jeuxApiUrl = "/api/jeux/";
+
+
 function afficherJeux(tab) {
     let article = document.querySelectorAll('article');
     article.forEach(x => x.remove());
@@ -77,7 +80,49 @@ function afficherJeux(tab) {
                 let confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?");
                 if (confirmation) {
                     let idASupprimer = article.getAttribute('id');
+
+                    let articleParent = supprimerBtn.closest('article');
+                    let plateformes = Array.from(articleParent.querySelectorAll('.imagePlatforme img')).map(img => img.getAttribute('alt'));
+
+                    let plateformesChoisi = [];
+
+                    plateformes.forEach(plateforme => {
+                        let plateformeExistante = listePlateformes.find(p => p.titre === plateforme);
+                        if (plateformeExistante) {
+                            plateformesChoisi.push(plateformeExistante.id);
+                        }
+                    });
+
+                    const newJeu = { id: idASupprimer, plateformes: plateformesChoisi };
+                    console.log(idASupprimer + " " + plateformesChoisi)
+
+                    fetch(jeuxApiUrl + idASupprimer, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newJeu)
+
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('La requête a échoué avec le statut ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.error) {
+                                throw new Error('Erreur lors de la suppression: ' + data.error);
+                            }
+                            listeJeux = listeJeux.filter((p) => (p.id != idASupprimer));
+                            filtrerJeux(selectedCategorie, selectedPlatform);
+                        })
+                        .catch(error => {
+                            alert("Erreur lors de la suppression du jeu: " + error);
+                            console.error('Erreur lors de la requête:', error);
+                        });
                     supprimerArticle(parseInt(idASupprimer));
+
                 }
             });
 
@@ -115,17 +160,56 @@ function afficherJeux(tab) {
                     categorie: categorie,
                     plateformes: plateformes
                 };
-                console.log(nouveauJeu);
-                console.log(listeJeux);
-
 
                 let index = listeJeux.findIndex(jeu => jeu.id === idModifier);
 
                 if (index !== -1) {
                     listeJeux[index] = nouveauJeu;
                 }
-
                 filtrerJeux(selectedCategorie, selectedPlatform);
+
+
+                backup = listeJeux[index];
+                let categorieChoisi = listeCategories.find(p => p.titre === listeJeux[index].categorie);
+                let plateformesChoisi = [];
+
+                plateformes.forEach(plateforme => {
+                    let plateformeExistante = listePlateformes.find(p => p.titre === plateforme);
+                    if (plateformeExistante) {
+                        plateformesChoisi.push(plateformeExistante.id);
+                    }
+                });
+
+                const newJeu = { id: idModifier, titre: listeJeux[index].titre, url_image: listeJeux[index].urlImage, id_categorie: categorieChoisi.id, plateformes: plateformesChoisi };
+
+                fetch(jeuxApiUrl + idModifier, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newJeu)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('La requête a échoué avec le statut ' + response.status);
+                        }
+                        return response.json(); //
+                    })
+                    .then(data => {
+                        listeJeux[index].id = Number(data.id);
+                        listeJeux[index].titre = data.titre;
+                        listeJeux[index].urlImage = data.url_image;
+                        listeJeux[index].categorie = Number(data.id_categorie);
+
+                        filtrerJeux(selectedCategorie, selectedPlatform);
+                    })
+                    .catch(error => {
+                        listeJeux[index] = backup;
+                        alert("Erreur lors de la modification du jeu: " + error);
+                        filtrerJeux(selectedCategorie, selectedPlatform);
+                        console.error('Erreur lors de la requête:', error);
+                    });
+
 
                 let formAjout = document.getElementById('divAjouter');
                 formAjout.remove();
@@ -224,25 +308,66 @@ document.addEventListener('DOMContentLoaded', function () {
                 let titre = document.getElementById('newTitre').value;
                 let urlImage = document.getElementById('newUrl').value;
                 let categorie = document.getElementById('newCate').value;
-                let plateformes = Array.from(document.getElementById('newPlat').selectedOptions).map(option => option.value);
+                let plateformesArray = Array.from(document.getElementById('newPlat').selectedOptions).map(option => option.value);
 
                 let nouveauJeu = {
-                    id: listeJeux.length + 1,
+                    id: -1,
                     titre: titre,
                     urlImage: urlImage,
                     categorie: categorie,
-                    plateformes: plateformes
+                    plateformes: plateformesArray
                 };
 
-console.log(listeJeux)
-
                 listeJeux.push(nouveauJeu);
-
                 filtrerJeux(selectedCategorie, selectedPlatform);
+
+
+
+                let categorieChoisi = listeCategories.find(p => p.titre === categorie);
+                let plateformesChoisi = [];
+
+                plateformesArray.forEach(plateforme => {
+                    let plateformeExistante = listePlateformes.find(p => p.titre === plateforme);
+                    if (plateformeExistante) {
+                        plateformesChoisi.push(plateformeExistante.id);
+                    }
+                });
+
+
+                // POST JEU
+                const newJeu = { id: -1, titre: titre, url_image: urlImage, id_categorie: categorieChoisi.id, plateformes: plateformesChoisi };
+                fetch(jeuxApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newJeu)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('La requête a échoué, code: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        let tempJeux = listeJeux.find(p => p.id == -1);
+                        tempJeux.id = Number(data.id);
+                        tempJeux.titre = data.titre;
+                        tempJeux.url_image = data.url_image;
+                        tempJeux.id_categorie = Number(data.id_categorie);
+                        filtrerJeux(selectedCategorie, selectedPlatform);
+                    })
+                    .catch(error => {
+                        listeJeux = listeJeux.filter((p) => p.id != -1);
+                        alert("Erreur a l'ajout du jeu: " + error);
+                        filtrerJeux(selectedCategorie, selectedPlatform);
+                        console.error('Erreur lors de la requête:', error);
+                    });
+
+
 
                 let formAjout = document.getElementById('divAjouter');
                 formAjout.remove();
-
             });
 
         });
